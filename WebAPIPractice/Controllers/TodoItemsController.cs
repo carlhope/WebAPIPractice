@@ -24,9 +24,15 @@ namespace WebAPIPractice.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<TodoItemDTO>>> GetTodoItems()
         {
+
+          if (_context.TodoItems == null)
+          {
+              return NotFound();
+          }
             return await _context.TodoItems
-            .Select(x => ItemToDTO(x))
-            .ToListAsync();
+                .Select(x=>ItemToDTO(x))
+                .ToListAsync();
+
         }
 
         // GET: api/TodoItems/5
@@ -83,19 +89,17 @@ namespace WebAPIPractice.Controllers
         [HttpPost]
         public async Task<ActionResult<TodoItemDTO>> PostTodoItem(TodoItemDTO todoDTO)
         {
-            var todoItem = new TodoItem
-            {
-                IsComplete = todoDTO.IsComplete,
-                Name = todoDTO.Name
-            };
 
+            var todoItem = new TodoItem { IsComplete = todoDTO.IsComplete, Name = todoDTO.Name };
+          if (_context.TodoItems == null)
+          {
+              return Problem("Entity set 'TodoContext.TodoItems'  is null.");
+          }
             _context.TodoItems.Add(todoItem);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction(
-                nameof(GetTodoItem),
-                new { id = todoItem.Id },
-                ItemToDTO(todoItem));
+            return CreatedAtAction(nameof(GetTodoItem), new { id = todoItem.Id }, ItemToDTO(todoItem));
+
         }
 
         // DELETE: api/TodoItems/5
@@ -122,6 +126,9 @@ namespace WebAPIPractice.Controllers
         {
             return (_context.TodoItems?.Any(e => e.Id == id)).GetValueOrDefault();
         }
+
+
+
         private static TodoItemDTO ItemToDTO(TodoItem todoItem) =>
        new TodoItemDTO
        {
