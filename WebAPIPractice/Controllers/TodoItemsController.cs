@@ -20,7 +20,7 @@ namespace WebAPIPractice.Controllers
             _context = context;
         }
 
-        // GET: api/TodoItems
+        // GET all
         [HttpGet]
         public async Task<ActionResult<IEnumerable<TodoItemDTO>>> GetTodoItems()
         {
@@ -35,7 +35,7 @@ namespace WebAPIPractice.Controllers
 
         }
 
-        // GET: api/TodoItems/5
+        // GET by id
         [HttpGet("{id}")]
         public async Task<ActionResult<TodoItemDTO>> GetTodoItem(long id)
         {
@@ -53,8 +53,7 @@ namespace WebAPIPractice.Controllers
             return ItemToDTO(todoItem);
         }
 
-        // PUT: api/TodoItems/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        // PUT
         [HttpPut("{id}")]
         public async Task<IActionResult> PutTodoItem(long id, TodoItemDTO todoItemDTO)
         {
@@ -84,8 +83,7 @@ namespace WebAPIPractice.Controllers
             return NoContent();
         }
 
-        // POST: api/TodoItems
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        // POST
         [HttpPost]
         public async Task<ActionResult<TodoItemDTO>> PostTodoItem(TodoItemDTO todoDTO)
         {
@@ -102,7 +100,7 @@ namespace WebAPIPractice.Controllers
 
         }
 
-        // DELETE: api/TodoItems/5
+        // DELETE
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteTodoItem(long id)
         {
